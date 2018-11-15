@@ -7,7 +7,7 @@ const bookshelf = (props) => {
   if(props.books){
 
      data = props.books.map(book => {
-      return <Book key= {book.id} title={book.title} author={book.authors[0]} image={book.imageLinks} />
+      return <Book key={book.id} id={book.id} title={book.title} author={book.authors[0]} image={book.imageLinks} changed={props.changed} />
     })
   }
 

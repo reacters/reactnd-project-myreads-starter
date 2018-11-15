@@ -21,9 +21,9 @@ class BooksApp extends React.Component {
       // console.log(data);
       let allBooks,currentlyReadingBooks, alreadyReadBooks,wantToReadBooks;
       allBooks = data;
-      currentlyReadingBooks = allBooks.filter(book => book.shelf == 'currentlyReading');
-      wantToReadBooks = allBooks.filter(book => book.shelf == 'wantToRead');
-      alreadyReadBooks = allBooks.filter(book => book.shelf == 'read');
+      currentlyReadingBooks = allBooks.filter(book => book.shelf === 'currentlyReading');
+      wantToReadBooks = allBooks.filter(book => book.shelf === 'wantToRead');
+      alreadyReadBooks = allBooks.filter(book => book.shelf === 'read');
 
       this.setState({
         allBooks: allBooks,
@@ -31,8 +31,37 @@ class BooksApp extends React.Component {
         wantToReadBooks: wantToReadBooks,
         alreadyReadBooks: alreadyReadBooks
       })
-      console.log("State now has all books ", this.state.allBooks);
     });
+  }
+  handleChange = (id,e) => {
+    let selectedvalue = e.target.value;
+    console.log(selectedvalue);
+    console.log(id);
+    let allBooks = [...this.state.allBooks];
+
+
+    allBooks.map(book => {
+      if(book.id == id){
+        book.shelf = selectedvalue
+        BooksAPI.update(book, selectedvalue);
+      }
+    });
+    let currentlyReadingBooks = allBooks.filter(book => book.shelf === 'currentlyReading');
+    let wantToReadBooks = allBooks.filter(book => book.shelf === 'wantToRead');
+    let alreadyReadBooks = allBooks.filter(book => book.shelf === 'read');
+
+
+    this.setState({
+      allBooks,
+      currentlyReadingBooks,
+      wantToReadBooks,
+      alreadyReadBooks
+    })
+
+
+
+
+
   }
 
   render() {
@@ -66,9 +95,9 @@ class BooksApp extends React.Component {
             <div className="list-books-content">
               <div>
 
-                <Bookshelf shelfTitle="Currently Reading" books={this.state.currentlyReadingBooks} />
-                <Bookshelf shelfTitle="Want To Read" books={this.state.wantToReadBooks} />
-                <Bookshelf shelfTitle="Read" books={this.state.alreadyReadBooks} />
+                <Bookshelf shelfTitle="Currently Reading" books={this.state.currentlyReadingBooks} changed={this.handleChange.bind(this)} />
+                <Bookshelf shelfTitle="Want To Read" books={this.state.wantToReadBooks} changed={this.handleChange.bind(this)} />
+                <Bookshelf shelfTitle="Read" books={this.state.alreadyReadBooks} changed={this.handleChange.bind(this)} />
 
               </div>
             </div>
