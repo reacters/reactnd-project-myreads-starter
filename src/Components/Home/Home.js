@@ -35,7 +35,7 @@ class Home extends Component {
       })
     });
   }
-  handleChange = (id,e) => {
+  handleChange = (id,book,e) => {
     let selectedvalue = e.target.value;
     console.log(selectedvalue);
     console.log(id);
@@ -44,7 +44,7 @@ class Home extends Component {
 
     allBooks.map(book => {
       if(book.id == id){
-        book.shelf = selectedvalue
+        book.shelf = selectedvalue;
         BooksAPI.update(book, selectedvalue);
       }
     });

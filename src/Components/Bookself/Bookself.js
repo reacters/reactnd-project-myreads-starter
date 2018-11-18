@@ -1,13 +1,15 @@
 import React from 'react';
 import Book from '../Book/Book';
 import MoveButton from '../MoveButton/MoveButton' ;
+import Spinner from '../Spinner/Spinner';
 
 const bookshelf = (props) => {
   let data;
+  data = <Spinner />;
   if(props.books){
 
      data = props.books.map(book => {
-      return <Book key={book.id} id={book.id} title={book.title} author={book.authors[0]} image={book.imageLinks} changed={props.changed} />
+      return <Book key={book.id} id={book.id} title={book.title} author={book.authors} image={book.imageLinks} changed={props.changed} book={book} />
     })
   }
 
@@ -17,7 +19,8 @@ const bookshelf = (props) => {
                   <div className="bookshelf-books">
                     <ol className="books-grid">
 
-                      {data}
+                      { data}
+
                     </ol>
                   </div>
                 </div>

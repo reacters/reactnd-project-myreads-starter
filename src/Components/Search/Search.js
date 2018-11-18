@@ -1,8 +1,62 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import * as BooksAPI from '../../BooksAPI';
+import Book from '../Book/Book';
+import Spinner from '../Spinner/Spinner';
 
 
 class Search extends Component{
+  constructor(props){
+    super(props);
+    this.books = [];
+
+  }
+
+  state = {
+    books: []
+  }
+
+  changed = (id,book,e) => {
+    let selectedValue = e.target.value;
+    console.log(`${book} with ${id} has been changed`);
+    BooksAPI.update(book, selectedValue);
+
+  }
+
+
+  searchHandler = (e) => {
+    let searchQuery = e.target.value;
+    let books = [];
+    if(searchQuery){
+      BooksAPI.search(e.target.value)
+      .then(results => {
+        console.log(results);
+
+        if(results.constructor === Array){
+          books = results.map(book => {
+            return <Book key={book.id} id={book.id} book={book}  title={book.title} author={book.authors} image={book.imageLinks} changed={this.changed}  />
+          })
+          this.setState({
+            books
+          })
+        }else{
+          books="No matches found";
+          this.setState({
+            books
+          })
+        }
+
+      })
+
+    }else{
+      books = "Please type in the input box to search";
+      this.setState({
+        books
+      })
+    }
+
+
+  }
 
   render(){
     return(
@@ -19,12 +73,15 @@ class Search extends Component{
             However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
             you don't find a specific author or title. Every search is limited by search terms.
           */}
-          <input type="text" placeholder="Search by title or author"/>
+          <input type="text" onChange={this.searchHandler} placeholder="Search by title or author"/>
 
         </div>
       </div>
       <div className="search-books-results">
-        <ol className="books-grid"></ol>
+        <ol className="books-grid">
+          {this.state.books}
+
+        </ol>
       </div>
     </div>
     )
