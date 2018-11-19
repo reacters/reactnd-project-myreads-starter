@@ -2,10 +2,14 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import * as BooksAPI from '../../BooksAPI';
 import Book from '../Book/Book';
+import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
+
+const searchAPIDebounced = AwesomeDebouncePromise(BooksAPI.search, 500);
 class Search extends Component{
   state = {
-    books: []
+    books: [],
+    loading: false
   }
 
   changed = (id,book,e) => {
@@ -14,36 +18,32 @@ class Search extends Component{
     BooksAPI.update(book, selectedValue);
   }
 
-  searchHandler = (e) => {
+  searchHandler = async (e) => {
+    this.setState({loading: true});
     let searchQuery = e.target.value;
     let books = [];
-    if(searchQuery){
-      BooksAPI.search(e.target.value)
-      .then(results => {
-        console.log(results);
+      const results = await searchAPIDebounced(searchQuery, 300);
 
+      if(results){
+        this.setState({loading: false})
         if(results.constructor === Array){
           books = results.map(book => {
             return <Book key={book.id} id={book.id} book={book}  title={book.title} author={book.authors} image={book.imageLinks} changed={this.changed}  />
           })
-          this.setState({
-            books
-          })
+          this.setState({books})
         }else{
           books="No matches found";
-          this.setState({
-            books
-          })
+          this.setState({books})
         }
+      }else{
+        this.setState({loading: false})
+        books = "Please type in the search box";
+        this.setState({books})
+      }
 
-      })
 
-    }else{
-      books = "Please type in the input box to search";
-      this.setState({
-        books
-      })
-    }
+
+
 
 
   }
@@ -69,7 +69,7 @@ class Search extends Component{
       </div>
       <div className="search-books-results">
         <ol className="books-grid">
-          {this.state.books}
+          {this.state.loading ? "Searching ..." : this.state.books}
 
         </ol>
       </div>
