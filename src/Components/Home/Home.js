@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import MoveButton from '../MoveButton/MoveButton';
 import AppTitle from '../AppTitle/AppTitle'
-import Bookshelf from '../Bookself/Bookself';
+import Bookshelf from '../Bookshelf/Bookshelf';
 import * as BooksAPI from '../../BooksAPI';
 import {Link} from 'react-router-dom';
 
@@ -42,11 +41,13 @@ class Home extends Component {
     let allBooks = [...this.state.allBooks];
 
 
-    allBooks.map(book => {
-      if(book.id == id){
-        book.shelf = selectedvalue;
-        BooksAPI.update(book, selectedvalue);
-      }
+    allBooks.forEach(book => {
+        if(book.id === id){
+          book.shelf = selectedvalue;
+          BooksAPI.update(book, selectedvalue);
+        }
+      
+      
     });
     let currentlyReadingBooks = allBooks.filter(book => book.shelf === 'currentlyReading');
     let wantToReadBooks = allBooks.filter(book => book.shelf === 'wantToRead');
