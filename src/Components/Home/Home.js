@@ -36,8 +36,6 @@ class Home extends Component {
   }
   handleChange = (id,book,e) => {
     let selectedvalue = e.target.value;
-    console.log(selectedvalue);
-    console.log(id);
     let allBooks = [...this.state.allBooks];
 
 
