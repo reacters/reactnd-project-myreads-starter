@@ -1,12 +1,16 @@
 import React from 'react';
-import classes from './Spinner.css';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-function Spinner() {
+
+
+const CircularIndeterminate = ()=> {
   return (
-    <div className={classes.loader}>
-      Loading...
+    <div>
+      <CircularProgress  />
     </div>
-  )
+  );
 }
 
-export default Spinner
+
+
+export default CircularIndeterminate;

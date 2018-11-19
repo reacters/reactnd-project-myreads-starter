@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom';
 import * as BooksAPI from '../../BooksAPI';
 import Book from '../Book/Book';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
+import PaperSheet from '../ErrorMsg/ErrorMsg';
+import CircularIndeterminate from '../Spinner/Spinner'
 
 
 const searchAPIDebounced = AwesomeDebouncePromise(BooksAPI.search, 500);
@@ -23,7 +25,6 @@ class Search extends Component{
     let searchQuery = e.target.value;
     let books = [];
       const results = await searchAPIDebounced(searchQuery, 300);
-
       if(results){
         this.setState({loading: false})
         if(results.constructor === Array){
@@ -32,20 +33,14 @@ class Search extends Component{
           })
           this.setState({books})
         }else{
-          books="No matches found";
+          books=<PaperSheet/>;
           this.setState({books})
         }
       }else{
         this.setState({loading: false})
-        books = "Please type in the search box";
+        books = <PaperSheet/>;
         this.setState({books})
       }
-
-
-
-
-
-
   }
 
   render(){
@@ -69,7 +64,7 @@ class Search extends Component{
       </div>
       <div className="search-books-results">
         <ol className="books-grid">
-          {this.state.loading ? "Searching ..." : this.state.books}
+          {this.state.loading ? <CircularIndeterminate/> : this.state.books}
 
         </ol>
       </div>

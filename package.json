@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@material-ui/core": "^3.5.1",
     "awesome-debounce-promise": "^1.0.0",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
