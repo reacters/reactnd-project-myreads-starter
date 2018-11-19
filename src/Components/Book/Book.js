@@ -2,7 +2,10 @@ import React from 'react';
 import MoveButton from '../MoveButton/MoveButton' ;
 
 const Book = (props) => {
-  let test = `url("${props.image.smallThumbnail}")`;
+  let test = '';
+  if(props.image){
+    test = `url("${props.image.smallThumbnail}")`;;
+  }
   return (
       <li>
         <div className="book">
