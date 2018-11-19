@@ -2,16 +2,8 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import * as BooksAPI from '../../BooksAPI';
 import Book from '../Book/Book';
-import Spinner from '../Spinner/Spinner';
-
 
 class Search extends Component{
-  constructor(props){
-    super(props);
-    this.books = [];
-
-  }
-
   state = {
     books: []
   }
@@ -20,9 +12,7 @@ class Search extends Component{
     let selectedValue = e.target.value;
     console.log(`${book} with ${id} has been changed`);
     BooksAPI.update(book, selectedValue);
-
   }
-
 
   searchHandler = (e) => {
     let searchQuery = e.target.value;
