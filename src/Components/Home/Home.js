@@ -42,7 +42,7 @@ class Home extends Component {
     let allBooks = [...this.state.allBooks];
 
 
-    allBooks.map(book => {
+    allBooks.forEach(book => {
       if(book.id == id){
         book.shelf = selectedvalue;
         BooksAPI.update(book, selectedvalue);
