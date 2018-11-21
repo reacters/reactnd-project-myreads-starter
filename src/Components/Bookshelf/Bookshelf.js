@@ -6,7 +6,16 @@ const bookshelf = (props) => {
   data = '';
   if(props.books){
      data = props.books.map(book => {
-      return <Book key={book.id} id={book.id} title={book.title} author={book.authors} image={book.imageLinks} changed={props.changed} book={book} />
+      return <Book 
+                key={book.id} 
+                id={book.id} 
+                title={book.title} 
+                author={book.authors} 
+                image={book.imageLinks} 
+                changed={props.changed} 
+                book={book} 
+                shelf={book.shelf}
+              />
     })
   }
 

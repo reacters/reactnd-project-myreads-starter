@@ -11,7 +11,12 @@ const Book = (props) => {
         <div className="book">
           <div className="book-top">
             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: test }}></div>
-            <MoveButton changed={props.changed} id={props.id} book={props.book} />
+              <MoveButton 
+                changed={props.changed} 
+                id={props.id} 
+                book={props.book} 
+                shelf={props.shelf}
+              />
           </div>
           <div className="book-title">{props.title}</div>
           <div className="book-authors">{props.author}</div>
