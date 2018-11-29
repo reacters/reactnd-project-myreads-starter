@@ -42,8 +42,31 @@ class BooksApp extends React.Component {
       })
     });
   }
-  componentWillReceiveProps(nextProps){
-    console.log("this is getting executed ",nextProps);
+  componentDidUpdate(prevProps, prevState){
+    console.log("this is getting executed ",prevState);
+    BooksAPI.getAll().then(data => {
+      // console.log(data);
+      let allBooks,currentlyReadingBooks, alreadyReadBooks,wantToReadBooks;
+      allBooks = data;
+      currentlyReadingBooks = allBooks.filter(book => book.shelf === 'currentlyReading');
+      wantToReadBooks = allBooks.filter(book => book.shelf === 'wantToRead');
+      alreadyReadBooks = allBooks.filter(book => book.shelf === 'read');
+      console.log("Inside home js ", currentlyReadingBooks);
+
+      if(prevState.currentlyReadingBooks.length !== currentlyReadingBooks.length ||
+         prevState.wantToReadBooks.length !== wantToReadBooks.length ||
+         prevState.alreadyReadBooks.length !== alreadyReadBooks.length
+        ){
+          this.setState({
+            allBooks: allBooks,
+            currentlyReadingBooks: currentlyReadingBooks,
+            wantToReadBooks: wantToReadBooks,
+            alreadyReadBooks: alreadyReadBooks
+          })
+        }
+
+
+    });
   }
 
   handleChange = (id,book,e) => {
