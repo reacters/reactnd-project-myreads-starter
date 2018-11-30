@@ -25,6 +25,9 @@ class BooksApp extends React.Component {
   }
   componentWillMount(){
     // console.log("inside component did mount");
+    this.setState({
+      books: []
+    })
     BooksAPI.getAll().then(data => {
       // console.log(data);
       let allBooks,currentlyReadingBooks, alreadyReadBooks,wantToReadBooks;
@@ -32,7 +35,7 @@ class BooksApp extends React.Component {
       currentlyReadingBooks = allBooks.filter(book => book.shelf === 'currentlyReading');
       wantToReadBooks = allBooks.filter(book => book.shelf === 'wantToRead');
       alreadyReadBooks = allBooks.filter(book => book.shelf === 'read');
-      console.log("Inside home js ", currentlyReadingBooks);
+      // console.log("Inside home js ", currentlyReadingBooks);
 
       this.setState({
         allBooks: allBooks,
@@ -42,8 +45,12 @@ class BooksApp extends React.Component {
       })
     });
   }
+  componentWillUnmount(){
+    console.log("component will unmount App");
+  }
   componentDidUpdate(prevProps, prevState){
-    console.log("this is getting executed ",prevState);
+
+    // console.log("componentDidUpdate",prevState);
     BooksAPI.getAll().then(data => {
       // console.log(data);
       let allBooks,currentlyReadingBooks, alreadyReadBooks,wantToReadBooks;
@@ -51,7 +58,7 @@ class BooksApp extends React.Component {
       currentlyReadingBooks = allBooks.filter(book => book.shelf === 'currentlyReading');
       wantToReadBooks = allBooks.filter(book => book.shelf === 'wantToRead');
       alreadyReadBooks = allBooks.filter(book => book.shelf === 'read');
-      console.log("Inside home js ", currentlyReadingBooks);
+      // console.log("Inside home js ", currentlyReadingBooks);
 
       if(prevState.currentlyReadingBooks.length !== currentlyReadingBooks.length ||
          prevState.wantToReadBooks.length !== wantToReadBooks.length ||
@@ -61,13 +68,15 @@ class BooksApp extends React.Component {
             allBooks: allBooks,
             currentlyReadingBooks: currentlyReadingBooks,
             wantToReadBooks: wantToReadBooks,
-            alreadyReadBooks: alreadyReadBooks
+            alreadyReadBooks: alreadyReadBooks,
+            books: []
           })
         }
 
 
     });
   }
+
 
   handleChange = (id,book,e) => {
     let selectedvalue = e.target.value;
@@ -162,7 +171,7 @@ class BooksApp extends React.Component {
       <div className="app">
       <Switch>
         <Route exact path='/' render={() => <Home books={this.state} changed={this.handleChange.bind(this)} />} />
-        <Route  path='/search' render={() => <Search allBooks={this.state.allBooks} changed={this.searchHandler.bind(this)} books={this.state.books} />} />
+        <Route  path='/search' render={() => <Search allBooks={this.state.allBooks} changed={this.searchHandler.bind(this)} books={this.state.books} searchInput={this.searchInput} />} />
       </Switch>
 
 
