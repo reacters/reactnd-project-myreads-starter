@@ -21,6 +21,7 @@ class BooksApp extends React.Component {
     alreadyReadBooks: [],
     showSearchPage: false,
     books: [],
+    searchedBooksArray: [],
     loading: false
   }
   componentWillMount(){
@@ -69,7 +70,7 @@ class BooksApp extends React.Component {
             currentlyReadingBooks: currentlyReadingBooks,
             wantToReadBooks: wantToReadBooks,
             alreadyReadBooks: alreadyReadBooks,
-            books: []
+            // books: []
           })
         }
 
@@ -106,8 +107,28 @@ class BooksApp extends React.Component {
     let selectedValue = e.target.value;
     console.log(`${book} with ${id} has been changed`);
     console.log(book.shelf);
+    book.shelf = selectedValue;
     BooksAPI.update(book, selectedValue);
-    console.log(book.shelf);
+    let tempBooks = [...this.state.searchedBooksArray];
+    console.log(tempBooks);
+    let res = tempBooks.map((item) => {
+      return <Book
+      book={item}
+      key={item.id}
+      id={item.id}
+      shelf={item.shelf}
+      title={item.title}
+      author={item.authors}
+      image={item.imageLinks}
+      changed={this.changed}
+      />
+    })
+    this.setState({books:res})
+
+
+
+
+
   }
 
   searchHandler = async (e) => {
@@ -118,8 +139,10 @@ class BooksApp extends React.Component {
       if(results){
         this.setState({loading: false});
         if(results.constructor === Array){
-          console.log(results);
-          console.log("All books are", this.state.allBooks);
+          this.setState({
+            searchedBooksArray: results
+          });
+          // console.log("All books are", this.state.allBooks);
 
 
             books = results.map((result) => {
